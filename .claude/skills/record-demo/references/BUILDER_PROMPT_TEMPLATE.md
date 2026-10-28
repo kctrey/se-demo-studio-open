@@ -37,9 +37,9 @@ content to keep off screen, branding, budget, deadline, story constraints.}}
    comes from it or from a source you fetch and add to `research/SOURCES_ADDENDUM.md` with a verbatim quote.
 3. `research/PRODUCT_UNDERSTANDING.md`: the problem, how the product works, the real workflow with exact
    surface names, where the value comes from, what must not be claimed, and the moments worth filming.
-4. `.claude/skills/record-demo/references/LESSONS_LEARNED.md` (studio root): what earlier jobs learned. Rules
-   below cite it as L1, L2, and so on. Skip a section headed "read only if" when this job does not have that
-   condition.
+4. `.claude/skills/record-demo/references/LESSONS_LEARNED.md` (studio root) is the history behind the rules
+   below, which cite it as (L1), (L2). You do not need to read it. Before you depart from a rule because it seems
+   not to fit this job, read the lesson it cites.
 5. `.claude/skills/record-demo/references/PIPELINE.md` (studio root): the toolkit, command by command.
 6. `examples/cloud-control-se-demo/` (studio root): a finished 5-minute demo's prompt, storyboard, script,
    claim list, and edit code. Read it for patterns; do not reuse its narration, and do not follow model or path
@@ -80,27 +80,44 @@ note. It sets positioning; it does not authorize a technical claim the sources d
    for parallel exploration, at most two driving the browser at once, each in its own tagged tab (L12), and
    only one at a time doing anything that changes state. You own the final flow. Zoom with the app's own zoom and
    pan controls when it has them, and with the edit's camera push-in and pan on dense pages that have none; click
-   elements to open their settings panels (L38). Close every item in
-   INTERVIEW.md's "Still unverified" list, if it has one.
+   elements to open their settings panels (L38). Avoid browser zoom (it reflows the layout); captures are at
+   device scale 2, so push-ins up to about 2x stay sharp; on a canvas, hold the whole canvas about two seconds
+   before zooming in. Close every item in INTERVIEW.md's "Still unverified" list, if it has one.
+   When the product is driven through a conversational agent (a CLI or chat agent), read that agent's own
+   instructions before writing any request, and list the questions it always asks whatever the request says (for
+   example, confirm the target, approve a plan). Put the details that matter in each request, and plan the
+   remaining answers in the storyboard (L68).
 2. Write `research/DEMO_MAP.md`: every surface with its exact name, what demo data lives there, what each
    available action does and whether it changes state, how long slow steps take, which AI agents or features
    actually answered (L9), and which incidents the data supports end to end. Also: which identity each surface
-   needs, which open in a new tab, which direct links work (L44, L45), that the version on screen is the one live
-   traffic uses (L46), and where the product records events the screen cannot show (L41).
+   needs, which open in a new tab, which direct links work, and the menu path to use where a link is refused (L44,
+   L45), that the version on screen is the one live traffic uses (L46), and where the product records events the
+   screen cannot show; when that record masks an input, point at the result it produced, not the input (L41).
 3. Pick ONE story and build the whole demo around it (L1 to L3). {{STORY HINT FROM THE INTERVIEW, or "Choose the
-   strongest story the data supports."}} Confirm its data is still there. Decide what the demo will not
-   investigate and how the SE says so.
+   strongest story the data supports."}} Confirm its data is still there now and again just before final takes:
+   instant demos reset, and scheduled workflows can change the data between takes (L1). The incident may be a
+   scheduled, injected fault: narrate no cause the data does not show, and prefer fixed, historical records to
+   "right now" views so every take shows the same picture (L2). Decide what the demo will not investigate and
+   how the SE says so.
 4. Write `research/STORYBOARD.md`: shot by shot, each shot with the click or typing, the value point it proves,
-   the draft talk-track line over it, and the source for that line. Looking good never outranks being true.
+   the draft talk-track line over it, and the source for that line. Mark which requests or takes depend on which;
+   independent ones run in parallel, two or three at a time (L69). Looking good never outranks being true.
 5. **Storyboard checkpoint (required).** Write `STORYBOARD_READY.md` with: the story in three sentences, the
    shot list with timings, the full draft talk track, what the demo deliberately leaves out, every state change
    you plan to make, what the screen shows while each live event happens off screen (L61), the concrete list of
-   identifiers that will be visible with a proposed blur for each (L58), and open questions. Then print a message that starts with "STORYBOARD READY:" and **stop
-   and wait**. Do not record final takes until `ORCHESTRATOR_NOTES.md` contains an entry that says
+   identifiers that will be visible with a proposed blur for each (L58), and open questions. Before you write it,
+   run the `claim-checker` agent on the draft talk track and on-screen text, fix what it finds, and put its
+   summary in the file (L77). Add a contact sheet of the key screens from exploration, one per shot where you
+   have one (`python3 lib/grid.py review/storyboard_sheet.jpg 3 capture/explore/<files>`), and check those frames
+   for anything the Footage rules ban, so the owner sees the picture before any take (L78). Then print a message
+   that starts with "STORYBOARD READY:" and **stop and wait**. Do not record final takes until `ORCHESTRATOR_NOTES.md` contains an entry that says
    "STORYBOARD APPROVED" (possibly with changes you must apply). Check the notes file every few minutes while
    you wait, and keep doing non-recording work (voice auditions, music beds, sources) in the meantime.
 6. Rehearse the full click path once without recording (find coordinates with `capture/tab.js`), then record.
-   Rehearse any owner action once with the owner too (L39).
+   Rehearse any owner action once with the owner too (L39). Record beats in story order: opening an item can
+   auto-run an analysis, post notifications, or show up in another view, so a later take may not find the state
+   an earlier one saw (L19). Just before final takes, ask every AI agent the story uses once more. If one the
+   story depends on no longer answers, print "OWNER DECISION NEEDED:" instead of building a thinner story (L9).
 
 ## Suggested structure (adapt it if a better one emerges)
 
@@ -124,10 +141,12 @@ loading, and quiet reading beats. Runtime: about {{LENGTH_MINUTES}} minutes; {{R
   footage; any general statement about what the product does for every customer needs a source.
 - No invented metrics, percentages, time savings, customers, quotes, testimonials, or logos. No numbers by
   default: published figures are usually anecdotes, hypotheticals, or internal counts. Do not narrate counts in
-  demo data (L8).
+  demo data (L8). Say only what the UI states; never infer a fact from a name or hostname (L7).
 - No invented SE experience: never "most customers tell me", "I see this every week", or a customer story.
 - AI helps investigate; people decide. Say "helps find the cause", never "finds the root cause", and never claim
   autonomous fixing or that it sees everything. Keep any "AI can make mistakes" footer legible at least once.
+- When two products' data does not line up (different sites, days, or start times), say what each one shows and
+  let the viewer connect them; never join them into one cause (L3).
 - Anything labeled preview, beta, controlled availability, or in development is left out, or its label stays
   visible if it appears on screen.
 - Put availability, licensing, and eligibility qualifiers in end-card fine print, worded exactly as the sources
@@ -149,13 +168,22 @@ Never generate, redraw, or AI-imagine the product's UI. Generated art is only fo
 close, and transitions, and none of it may imitate a product screen.
 
 - Capture with `capture/rec.js` (DevTools screencast, 1920x1080 CSS pixels at device scale 2, scrollbars hidden,
-  theme pinned). Frames arrive only when the page changes; `lib/build_clips.py` resamples to 30 fps.
+  theme pinned). Frames arrive only when the page changes; `lib/build_clips.py` resamples to 30 fps. The pinned
+  theme is browser emulation only; if the app has its own account Theme setting, set it to match before the
+  first take (L14).
 - The capture has no cursor. `rec.js` logs pointer moves, clicks, and keys; the render draws the cursor from that
-  log. Move along natural curves with short settles, and type with uneven, human timing (L16).
-- Record long continuous takes (L18). Check every take right away with `lib/recsheet.py`.
+  log. Move along natural curves with short settles, and type with uneven, human timing (L16). Read the box back
+  with `typed()` and press Enter only on an exact match.
+- Record long continuous takes (L18). Check every take right away with `lib/recsheet.py`. Delete superseded and
+  failed raw takes as you go with `python3 lib/clean.py rec <take>` (it deletes only inside this job, L60), and
+  record long waits at `JPGQ=75` (L32).
 - Present footage in the slim browser frame (build/story.js) with chapter chips, the footer "{{FOOTER TEXT,
   default: Real product UI · demo environment, fictional data}}", and gentle push-ins to make key text readable
-  (mind the camera clamp, L29). A callout is for the rare point a push-in cannot make.
+  (render stills print any push-in the frame edge clamps, L29). A callout is for the rare point a push-in cannot make.
+- Before the first rough cut, scan every text-heavy frame (terminal replays, long text panes) for banned strings:
+  tool headers (version, plan, folder path), tokens and credentials, error and refusal wording, and anything the
+  owner excluded. Also look for clipped lines. Read the visible text at every shot in the take script (`dtext()`)
+  and check the contact sheets; fix what you find while filming, by framing, a cut, or a new take (L73).
 
 ## Signed-in capture
 
@@ -171,7 +199,9 @@ close, and transitions, and none of it may imitate a product screen.
   read a password, one-time code, cookie, token, or storage value.
 - If the session is missing or expired, write `LOGIN_NEEDED.md` (one short paragraph on what the owner must do)
   and print a message that starts with "LOGIN NEEDED:". Check for the signed-in state every minute and keep
-  working on everything else meanwhile. Time-limited demos reward capturing early.
+  working on everything else meanwhile. Time-limited demos reward capturing early. Sessions can expire mid-job:
+  immediately before any take whose action cannot be repeated freely (an import, a create, a live call), re-park
+  the tab (`capture/park.js`) and confirm it is signed in (L70).
 - Sign-in screens are never recorded (L47). Start a take or take a screenshot only after confirming the page is
   signed in, and never pass through a sign-in, SSO, password, or one-time-code page during either. `rec.js` and
   `shot()` refuse such pages, and `rec.js` deletes a take that reaches one. That guard is a pattern check, not a
@@ -196,7 +226,7 @@ close, and transitions, and none of it may imitate a product screen.
 - AI caller: ChatGPT voice mode places each call through `node capture/caller.js` and Claude in Chrome, with
   persona file {{script/caller_persona_<name>.txt}} and number {{NUMBER}}. Follow the run order in
   `.claude/skills/record-demo/references/AI_CALLER.md` exactly. Do not dial unless `caller.js loopback` printed
-  PASS in the same session. Keep `audio/calls/<name>_{agent,caller}.wav` and the transcript for the edit.}}
+  PASS right before that dial (L74); on a FAIL, follow that file's Run order step 5. Keep `audio/calls/<name>_{agent,caller}.wav` and the transcript for the edit.}}
 - Allowed: {{ALLOWED ACTIONS FROM THE INTERVIEW. Default "look and ask": navigating, filtering, searching, reading
   existing threads, asking the AI assistant questions, opening investigations. "Full control" adds creating and
   running investigations, assigning and resolving items, sharing within the demo, generating summaries, and
@@ -207,7 +237,8 @@ close, and transitions, and none of it may imitate a product screen.
   require anything else on this list, print "OWNER DECISION NEEDED:" with the question and keep working.
 - Log every state change (what, where, when, why) in `logs/state_changes.md`, and only after the take's own marks
   confirm it happened. A script that runs several live takes runs one instance at a time and does not reset state
-  on a failure that must be retried (L53).
+  on a failure that must be retried. Each runner writes its own output file, and a reset step logs a row only when
+  it actually changed something (L53).
 - Redaction: {{REDACTION DECISION. Default: blur every real person, account, email, org or tenant identifier,
   and session ID, including the signed-in demo account and other users' names in thread titles and share
   dialogs, and the owner's own identifiers (for example their phone number shown as a caller); fictional demo
@@ -216,7 +247,9 @@ close, and transitions, and none of it may imitate a product screen.
   blur is needed, still never narrate user names.}}
   Bake any blur into edit copies only with `lib/redact.py` (regions in `build/edit.py` REDACT), keep raw captures
   untouched (sign-in frames are the exception: delete them), and log each region in the README.
-- When capture is finished, stop this Chrome (`scripts/chrome.sh {{SLUG}} --stop`) and delete `.chrome-profile`.
+- Keep `.chrome-profile` (the owner's sign-in) until the owner says the job is finished: a change after the final
+  needs it (L67). At FINAL READY, stop this Chrome (`scripts/chrome.sh {{SLUG}} --stop`) and leave the profile;
+  the supervisor asks the owner about deleting it when the job closes.
 
 ## Visual style
 
@@ -228,13 +261,18 @@ and `engine.js` rarely need changes.
 
 ## Audio
 
+- Write the final talk track from the recorded takes, after recording: live AI answers change run to run, so the
+  storyboard's lines are a draft (L4).
 - Voice: the SE should sound like a person talking over a screen share, not a narrator reading copy. Audition
   voices on a short paragraph first (`lib/take.py ... --dir audio/audition --text <file>`), then record several
   full takes of the talk track across the best two or three. Have an audio-capable model score them for
   naturalness, conversational register, and warmth (`lib/chat.py`), and check every take's wording with
-  `lib/stt.py` and `lib/check_take.py`. Start from L22's winner; the catalog changes often.
+  `lib/stt.py` and `lib/check_take.py`. Whisper mishears some words; before rewording a line that
+  `check_take.py` flags, confirm with a short listen (`lib/chat.py openai/gpt-audio`) (L24). Start from the demo
+  voice in `.claude/skills/record-demo/references/MODELS.md` (L22); the catalog changes often.
 - Pronunciation lives in the speech text (L23): {{RESPELLINGS FOR THIS PRODUCT}}. Put the same pairs in job.json
-  "respell" so captions show the written form. Listen-check every product name in the winning take.
+  "respell" so captions show the written form. Listen-check every product name in the winning take. If a voice
+  keeps saying a word wrong, reword the line (L23).
 - Test whether a model's style field actually changes the read before relying on it. Never put directions in the
   spoken text, and confirm no take reads a direction aloud.
 - Assemble with `lib/build_voice.py`; cut only at paragraph gaps (L25). Drive every cut, push-in, and chapter
@@ -245,8 +283,10 @@ and `engine.js` rarely need changes.
 ## Pacing
 
 Produce a rough end-to-end render with first-pass audio soon after the storyboard is approved and print
-"ROUGH CUT READY:" with its path. Then improve it in numbered versions (`out/{{SLUG}}_v1.mp4`, `_v2`...). Do not
-spend more than {{HOURS}} hours in total.
+"ROUGH CUT READY:" with its path. Then improve it in numbered versions (`out/{{SLUG}}_v1.mp4`, `_v2`...). Render
+only at checkpoints: the rough cut, one version after each round of fixes, and the final. In between, edit the
+timeline and check it with stills (`node build/render.js stills`), not full renders (L72). Do not spend more than
+{{HOURS}} hours in total.
 
 ## Review
 
@@ -286,14 +326,21 @@ Use the toolkit and the models on OpenRouter. If you need to install anything el
 starts with "TOOL REQUEST:": name the tool, why, where it comes from, and roughly how large it is. Wait for the
 go-ahead.
 
+Shell: macOS has no `timeout` command; run long takes in the background and wait for the notification. Delete
+takes, clips, and render chunks with `python3 lib/clean.py`; anything else with absolute paths and no globs (the
+command safety check blocks `rm` after a `cd` or with a glob), and write re-runs to a fresh folder (L60).
+
 Subagents: use the studio's agents (`demo-explorer`, `demo-researcher`, `claim-checker`) or general subagents
 however helps. They run on Opus 5.5 at high effort, set in the studio settings; do not override the model.
 
 ## Status markers
 
 Every time you print a line that starts with LOGIN NEEDED:, STORYBOARD READY:, OWNER DECISION NEEDED:, OWNER ACTION
-NEEDED:, TOOL REQUEST:, ROUGH CUT READY:, or FINAL READY:, also append it with a timestamp to `STATUS.md` in this folder
-(`echo "$(date '+%F %T') MARKER: text" >> STATUS.md`). The supervisor watches that file, not your terminal.
+NEEDED:, TOOL REQUEST:, ROUGH CUT READY:, or FINAL READY:, print it with `python3 lib/status.py "MARKER: text"`,
+which also appends it with a timestamp to `STATUS.md` in this folder. The supervisor watches that file, not your
+terminal. `rec.js`, `park.js`, and `shot()` append their own LOGIN NEEDED lines; do not repeat those (L75). Write
+the text after the marker for the owner, in plain words: what happened, what they must do, and how long it takes.
+No tool, file, model, or variable names (L79).
 
 ## Orchestrator notes channel
 

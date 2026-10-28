@@ -39,8 +39,10 @@ for a yes.
 5. **Story.** Do they already have an incident, workflow, or use case in mind? If yes, get the specifics (site,
    user, alert, what should happen). If no, the builder picks the strongest story the demo data supports, and they
    approve it at the storyboard checkpoint.
-6. **Must show / must avoid.** Features that must appear, and anything to keep out (unreleased features, a
-   competitor, a product that is not connected in the demo).
+6. **Must show / must avoid.** Features that must appear, listed per product area, with a length ceiling for the
+   whole video, and anything to keep out (unreleased features, a competitor, a product that is not connected in
+   the demo). Ask whether anything may be added after the final. Settle the whole list now: each addition after
+   the final costs a new storyboard, a new sign-in, and new renders (L67).
 7. **How far the demo may act.** "Look and ask" (navigate, search, ask the AI questions: safest), or "full
    control" (also run investigations, assign or resolve items, run demo workflows). Tenant administration is
    never allowed by default. If the story's strongest moment needs a configuration change, ask for that exact
@@ -80,7 +82,9 @@ Ask this round right after round 2 when the environment is their own or the stor
     (check whether one covers all); which apps allow only one session at a time (sign out elsewhere first); and
     which open in a new tab.
 15. **Live actions by the owner.** Recommend none unless the live event is the point of the story; a record the
-    system already holds (a past call, an existing ticket) usually tells it as well and runs unattended (L2). Say
+    system already holds (a past call, an existing ticket) usually tells it as well and runs unattended (L2). On a
+    person's first job (`jobs/` holds only test runs), recommend none at all, and present live actions and the AI
+    caller as advanced: they need the person for an hour or more during the build (L81). Say
     plainly what live actions cost: they must be available within set time windows, they rehearse once with the
     builder, and they are asked "ready?" before every live take, so a cue never arrives while they are away. If
     they still want them: anything they must do in the real world during a take (place a call, send a message, tap
@@ -91,7 +95,9 @@ Ask this round right after round 2 when the environment is their own or the stor
     AI Agent with no keypad menu), offer the AI caller instead (references/AI_CALLER.md): ChatGPT voice mode
     places and holds the call with no human on the line. Say that OpenAI then hears the whole call, and that it
     needs a one-time setup of about 10 minutes (audio cables, Claude in Chrome, Webex audio settings, a test call
-    to their own phone).
+    to their own phone). Before they choose it, ask the four readiness questions at the top of AI_CALLER.md
+    "Setup" (Webex Calling that can dial outside numbers, a ChatGPT voice button, permission to install a driver,
+    and the number to dial). If any answer is no, drop the AI caller now, not after the story is built.
 16. **Time windows.** Schedules that limit when live takes can run (business hours, maintenance windows, a demo
     reservation ending), with the time zone. Everything else can run any time.
 17. **Off-screen events.** Anything the screen recording cannot capture (phone audio, another device, an email

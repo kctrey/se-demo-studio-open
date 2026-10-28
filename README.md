@@ -5,24 +5,51 @@ product footage, an AI voice walking through one story, captions, and a player p
 Claude interviews you, researches the product from official sources, explores the demo, shows you the storyboard
 and talk track for approval, then records, narrates, edits, and renders on its own.
 
-Built from four real jobs, including a 5-minute Cisco Cloud Control demo (see `examples/`).
+Built from real jobs since September 2026, including a 5-minute Cisco Cloud Control demo (see `examples/`).
+
+## Before you start (once, about 15 minutes)
+
+1. **Open Terminal.** Press Cmd+Space, type `Terminal`, press Enter. Never used a terminal? Anthropic's
+   terminal guide shows how: https://code.claude.com/docs/en/terminal-guide. You type (or paste) a command
+   and press Enter.
+2. **Install Claude Code.** Paste `curl -fsSL https://claude.ai/install.sh | bash` and press Enter. It shows no
+   progress while it downloads. Then open a new Terminal window and run `claude --version`: it prints a version
+   number.
+3. **Sign in.** Run `claude` and follow the browser prompts. Claude Code needs a Claude Pro, Max, Team, or
+   Enterprise account (the free plan does not include it), with access to Opus 5.5. A build keeps Opus busy for
+   hours, so a plan with low usage limits can pause partway; after the limit resets, type `continue` in the window
+   that stopped. Type `/exit` to leave.
+4. **Node.js and Chrome.** If you do not have them, install Node.js (the LTS installer from https://nodejs.org)
+   and Google Chrome. Setup checks both and tells you what is missing.
+5. **Git.** The first time you run `git` below, macOS may offer to install its command line tools. Click
+   Install, wait for it to finish (a few minutes), and run the command again.
 
 ## Start Here
 
 1. In NodeTerm or Terminal, get the studio and open its folder:
    `git clone https://github.com/achobgood/se-demo-studio.git && cd se-demo-studio`. Always start Claude from
-   this folder; the studio's agents only load here. To get studio updates later, run `git pull` in this folder.
+   this folder; the studio's agents only load here. To check, run `pwd`: the last part must be `se-demo-studio`.
+   To get studio updates later, run `git pull` in this folder.
 2. Run `claude`. The first time, accept the prompt to trust this folder (the studio's pre-approved commands only
    load in a trusted folder; they are listed under "allow" in `.claude/settings.json`). Then say **"help me
    record a demo"**.
 3. Claude checks your setup first and walks you through anything missing, including OpenRouter.
+
+First time? Say **do a test run**. About 5 to 10 minutes, under 5 cents.
+
+## Updates
+
+- To get the newest version, run `git pull` in the studio folder.
+- Claude runs setup each time you start a new demo, and setup installs anything the new version needs.
+- To see your version, run `cat VERSION`, or read the first line setup prints. What changed is in `CHANGELOG.md`.
 
 ## What you need
 
 - A Mac with Google Chrome, Node.js 20 or newer, and Python 3. `scripts/setup.sh` checks all of it and installs
   the capture and render tools into `toolkit/` (about 400 MB).
 - Claude Code (tested on version 2.1.300; `claude update` to upgrade) with access to Opus 5.5. The studio runs
-  every session at `claude-opus-5-5`, high effort. A build runs for 1 to 2 hours and uses your Claude plan.
+  every session at `claude-opus-5-5`, high effort. A build runs for 3 to 5 hours, mostly unattended, and uses
+  your Claude plan; adding to a demo after its final can double that.
 - NodeTerm (recommended): a terminal app that shows each Claude session as a window on a canvas, so you can watch
   the builder next to the session you talk to. Download it from https://nodeterm.dev.
   Without it, the builder runs in a second Terminal window.
@@ -52,15 +79,21 @@ Built from four real jobs, including a 5-minute Cisco Cloud Control demo (see `e
 
 ## How a job runs
 
-1. **Interview** (5 minutes): product, audience, story, how far the demo may act, redaction, budget.
+You will see two Claude windows. The first, where you said "help me record a demo", is the one you talk to: it
+asks you questions, shows you the storyboard, and tells you when you are needed. The second is the builder. The
+only thing you ever do there is answer a yes or no question it shows (below).
+
+1. **Interview** (5 minutes): product, audience, story, how far the demo may act, redaction, budget. Name
+   everything the video must show now; each addition after the final costs a new storyboard and new renders.
 2. **Research and sign-in**: an agent quotes official sources; you sign in to the demo in the job's Chrome.
 3. **Exploration and storyboard**: the builder explores the product, picks one story the data supports, and
    stops with a storyboard and full talk track for your approval.
-4. **Build** (about 1 to 2 hours, longer when you take part live, for example placing calls; mostly unattended; glance at the builder window in case it asks to approve an
-   unusual command): recording, voice auditions and takes, edit, render, two model
-   review rounds, captions, and the player page. Approve commands that work inside the job's folder. Say no to
-   anything that installs software, deletes files outside the job, or sends files somewhere new, and ask about it
-   in the window where you started.
+4. **Build** (about 3 to 5 hours; unattended when nothing happens live, while live actions such as placing calls
+   need you for an hour or more): recording, voice auditions and takes, edit, render, two model review rounds,
+   captions, and the player page. Glance at the builder window now and then: if it shows a yes or no question
+   about a command, answer yes when the command starts with `python3 lib/`, `node capture/`, `node build/`,
+   `build/render_par.sh`, or `scripts/`, or works only inside the job's folder. Say no to anything that installs
+   software, deletes files outside the job, or sends files somewhere new, and ask about it in the first window.
 5. **Report**: where the video is, each claim with its source, spend, and what still needs a human decision.
 
 Nothing here is brand, legal, or SME reviewed. Treat the output as an internal draft until you have that review.
@@ -75,3 +108,9 @@ Nothing here is brand, legal, or SME reviewed. Treat the output as an internal d
 | `examples/cloud-control-se-demo/` | A finished 5-minute demo: prompt, storyboard, script, claims, edit code |
 | `jobs/` | Your jobs, one folder each. Never zip or share it: while a job runs it holds your signed-in browser profile, and it keeps raw, unblurred footage. To share the studio, share the GitHub link. |
 | `.env` | Your OpenRouter key (created by setup; only you can read it) |
+
+## License
+
+The studio is licensed under the Apache License 2.0 (see `LICENSE`). The bundled fonts in
+`toolkit/job-template/build/fonts/` keep their own SIL Open Font License 1.1: IBM Plex Mono
+(`OFL-IBM-Plex.txt`) and Inter (`OFL-Inter.txt`).
