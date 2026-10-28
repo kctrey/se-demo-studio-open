@@ -7,7 +7,7 @@ and talk track for approval, then records, narrates, edits, and renders on its o
 
 Built from four real jobs, including a 5-minute Cisco Cloud Control demo (see `examples/`).
 
-## Start
+## Start Here
 
 1. In NodeTerm or Terminal, get the studio and open its folder:
    `git clone https://github.com/achobgood/se-demo-studio.git && cd se-demo-studio`. Always start Claude from
